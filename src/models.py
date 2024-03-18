@@ -36,9 +36,10 @@ class Favorite(db.Model):
     planet_id = db.Column(db.Integer, db.ForeignKey('planet.id'))
     character_id = db.Column(db.Integer, db.ForeignKey('character.id'))
     # user = db.relationship('User',backref='id')
-    user = db.relationship('User',backref='id')
-    planet = db.relationship('Planet',backref='id')
-    character = db.relationship('Character',backref='id')
+    # planet = db.relationship('Planet',backref='id')
+    # character = db.relationship('Character',backref='id')
+    planet = db.relationship("Planet", foreign_keys=[planet_id])
+    character = db.relationship("Character", foreign_keys=[character_id])
 
     def __repr__(self):
         return '<Favorite %r>' % self.name
@@ -73,7 +74,7 @@ class Character(db.Model):
             'mass': self.mass,
             'hair_color': self.hair_color,
             'skin_color': self.skin_color,
-            'eye_color': self.eyes_color,
+            'eye_color': self.eye_color,
             'birth_year': self.birth_year,
             'gender': self.gender,
             'homeworld': self.homeworld,
@@ -105,5 +106,5 @@ class Planet(db.Model):
             'climate': self.climate,
             'terrain': self.terrain,
             'surface_water': self.surface_water,
-            'planet_pic': self.url
+            'planet_pic': self.planet_pic
         }
