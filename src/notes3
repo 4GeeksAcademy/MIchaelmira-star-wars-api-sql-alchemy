@@ -1,0 +1,26 @@
+# How to open my database
+#     psql -h localhost -U gitpod example
+
+# open datatable
+#     \dt 
+#         List of relations
+#     Schema |      Name       | Type  | Owner  
+#     --------+-----------------+-------+--------
+#     public | alembic_version | table | gitpod
+#     public | character       | table | gitpod
+#     public | favorite        | table | gitpod
+#     public | planet          | table | gitpod
+#     public | user            | table | gitpod
+#     (5 rows)
+
+# open user inner
+#     \dS public.user
+#             Table "public.user"
+#         Column    |          Type          | Collation | Nullable |             Default              
+#     --------------+------------------------+-----------+----------+----------------------------------
+#     id           | integer                |           | not null | nextval('user_id_seq'::regclass)
+#     username     | character varying(100) |           | not null | 
+#     email        | character varying(120) |           | not null | 
+#     password     | character varying(80)  |           | not null | 
+#     character_id | integer                |           |          | 
+#     planet_id    | integer                |           |          | 

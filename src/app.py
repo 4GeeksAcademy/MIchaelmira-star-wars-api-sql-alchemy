@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User
+from models import db, User, Favorite
 #from models import Person
 
 app = Flask(__name__)
@@ -41,25 +41,42 @@ def sitemap():
 @app.route('/users', methods=['GET', 'POST'])
 def handle_users():
     if request.method == 'POST':
-        user_data = request.json #user_data.username user_data.full_name
+        user_data = request.json 
         new_user = User(
             username=user_data["username"],
-            full_name=user_data["full_name"]
+            email=user_data["email"],
+            password=user_data["password"],
         )
-        return jsonify(new_user.transform_into_dictionary()), 201
+        db.session.add(new_user)
+        db.session.commit()
+        return jsonify(new_user.serialize()), 201
     else:
         users = User.query.all()
         users_as_dictionaries = []
         for user in users:
             users_as_dictionaries.append(
-                user.transform_into_dictionary()
+                user.serialize()
             )
-            return jsonify(users_as_dictionaries), 200
-        # response_body = {
-        #     "msg": "Hello, this is your GET /user response "
-        # }
-
-        # return jsonify(response_body), 200
+        return jsonify(users_as_dictionaries), 200
+    
+@app.route('/favorites', methods=['GET', 'POST'])
+def handle_favorites():
+    if request.method == 'POST':
+        favorite_data = request.json 
+        new_favorite = Favorite(
+            name=favorite_data["name"]
+        )
+        db.session.add(new_favorite)
+        db.session.commit()
+        return jsonify(new_favorite.serialize()), 201
+    else:
+        favorites = Favorite.query.all()
+        favorites_as_dictionaries = []
+        for favorite in favorites:
+            favorites_as_dictionaries.append(
+                favorite.serialize()
+            )
+        return jsonify(favorites_as_dictionaries), 200
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
