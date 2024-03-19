@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User, Favorite
+from models import db, User, Favorite, Character
 #from models import Person
 
 app = Flask(__name__)
@@ -52,12 +52,13 @@ def handle_users():
         return jsonify(new_user.serialize()), 201
     else:
         users = User.query.all()
-        users_as_dictionaries = []
-        for user in users:
-            users_as_dictionaries.append(
-                user.serialize()
-            )
-        return jsonify(users_as_dictionaries), 200
+        # users_dictionaries = []
+        # for user in users:
+        #     users_dictionaries.append(
+        #         user.serialize()
+        #     )
+        users_dictionaries= [user.serialize() for user in users]
+        return jsonify(users_dictionaries), 200
     
 @app.route('/favorites', methods=['GET', 'POST'])
 def handle_favorites():
@@ -71,12 +72,41 @@ def handle_favorites():
         return jsonify(new_favorite.serialize()), 201
     else:
         favorites = Favorite.query.all()
-        favorites_as_dictionaries = []
-        for favorite in favorites:
-            favorites_as_dictionaries.append(
-                favorite.serialize()
-            )
-        return jsonify(favorites_as_dictionaries), 200
+        # favorites_dictionaries = []
+        # for favorite in favorites:
+        #     favorites_dictionaries.append(
+        #         favorite.serialize()
+        #     )
+        favorites_dictionaries = [favorite.serialize() for favorite in favorites]
+        return jsonify(favorites_dictionaries), 200
+    
+@app.route('/characters', methods=['GET', 'POST'])
+def handle_characters():
+    if request.method == 'POST':
+        character_data = request.json 
+        new_character = Character(
+            name=character_data["name"],
+            height=character_data["height"],
+            mass=character_data["mass"],
+            hair_color=character_data["hair_color"],
+            skin_color=character_data["skin_color"],
+            eye_color=character_data["eye_color"],
+            birth_year=character_data["birth_year"],
+            gender=character_data["gender"],
+            homeworld=character_data["homeworld"]
+        )
+        db.session.add(new_character)
+        db.session.commit()
+        return jsonify(new_character.serialize()), 201
+    else:
+        characters = Character.query.all()
+        # favorites_dictionaries = []
+        # for favorite in favorites:
+        #     favorites_dictionaries.append(
+        #         favorite.serialize()
+        #     )
+        characters_dictionaries = [character.serialize() for character in characters]
+        return jsonify(characters_dictionaries), 200
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
