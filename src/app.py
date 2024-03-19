@@ -52,11 +52,6 @@ def handle_users():
         return jsonify(new_user.serialize()), 201
     else:
         users = User.query.all()
-        # users_dictionaries = []
-        # for user in users:
-        #     users_dictionaries.append(
-        #         user.serialize()
-        #     )
         users_dictionaries= [user.serialize() for user in users]
         return jsonify(users_dictionaries), 200
     
@@ -72,11 +67,6 @@ def handle_favorites():
         return jsonify(new_favorite.serialize()), 201
     else:
         favorites = Favorite.query.all()
-        # favorites_dictionaries = []
-        # for favorite in favorites:
-        #     favorites_dictionaries.append(
-        #         favorite.serialize()
-        #     )
         favorites_dictionaries = [favorite.serialize() for favorite in favorites]
         return jsonify(favorites_dictionaries), 200
     
@@ -100,11 +90,6 @@ def handle_characters():
         return jsonify(new_character.serialize()), 201
     else:
         characters = Character.query.all()
-        # favorites_dictionaries = []
-        # for favorite in favorites:
-        #     favorites_dictionaries.append(
-        #         favorite.serialize()
-        #     )
         characters_dictionaries = [character.serialize() for character in characters]
         return jsonify(characters_dictionaries), 200
     
@@ -128,11 +113,6 @@ def handle_planets():
         return jsonify(new_planet.serialize()), 201
     else:
         planets = Planet.query.all()
-        # favorites_dictionaries = []
-        # for favorite in favorites:
-        #     favorites_dictionaries.append(
-        #         favorite.serialize()
-        #     )
         planets_dictionaries = [planet.serialize() for planet in planets]
         return jsonify(planets_dictionaries), 200
 
