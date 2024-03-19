@@ -114,14 +114,14 @@ def handle_planets():
         planet_data = request.json 
         new_planet = Planet(
             name=planet_data["name"],
-            height=planet_data["height"],
-            mass=planet_data["mass"],
-            hair_color=planet_data["hair_color"],
-            skin_color=planet_data["skin_color"],
-            eye_color=planet_data["eye_color"],
-            birth_year=planet_data["birth_year"],
-            gender=planet_data["gender"],
-            homeworld=planet_data["homeworld"]
+            diameter=planet_data["height"],
+            rotation_period=planet_data["mass"],
+            orbital_period=planet_data["hair_color"],
+            gravity=planet_data["skin_color"],
+            population=planet_data["eye_color"],
+            climate=planet_data["birth_year"],
+            terrain=planet_data["gender"],
+            surface_water=planet_data["homeworld"]
         )
         db.session.add(new_planet)
         db.session.commit()
