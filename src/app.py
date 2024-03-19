@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User, Favorite, Character
+from models import db, User, Favorite, Character, Planet
 #from models import Person
 
 app = Flask(__name__)
@@ -107,6 +107,34 @@ def handle_characters():
         #     )
         characters_dictionaries = [character.serialize() for character in characters]
         return jsonify(characters_dictionaries), 200
+    
+@app.route('/planets', methods=['GET', 'POST'])
+def handle_planets():
+    if request.method == 'POST':
+        planet_data = request.json 
+        new_planet = Planet(
+            name=planet_data["name"],
+            height=planet_data["height"],
+            mass=planet_data["mass"],
+            hair_color=planet_data["hair_color"],
+            skin_color=planet_data["skin_color"],
+            eye_color=planet_data["eye_color"],
+            birth_year=planet_data["birth_year"],
+            gender=planet_data["gender"],
+            homeworld=planet_data["homeworld"]
+        )
+        db.session.add(new_planet)
+        db.session.commit()
+        return jsonify(new_planet.serialize()), 201
+    else:
+        planets = Planet.query.all()
+        # favorites_dictionaries = []
+        # for favorite in favorites:
+        #     favorites_dictionaries.append(
+        #         favorite.serialize()
+        #     )
+        planets_dictionaries = [planet.serialize() for planet in planets]
+        return jsonify(planets_dictionaries), 200
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
