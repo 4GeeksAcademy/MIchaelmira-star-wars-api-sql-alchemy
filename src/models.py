@@ -29,30 +29,6 @@ class User(db.Model):
             
         }
 
-class Favorite(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(250), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    planet_id = db.Column(db.Integer, db.ForeignKey('planet.id'))
-    character_id = db.Column(db.Integer, db.ForeignKey('character.id'))
-    # user = db.relationship('User',backref='id')
-    # planet = db.relationship('Planet',backref='id')
-    # character = db.relationship('Character',backref='id')
-    planet = db.relationship("Planet", foreign_keys=[planet_id])
-    character = db.relationship("Character", foreign_keys=[character_id])
-
-    def __repr__(self):
-        return '<Favorite %r>' % self.name
-
-    def serialize(self):
-        return {
-            "id": self.id,
-            "name": self.name,
-            "user_id": self.user_id,
-            "character_id": self.character_id,
-            "planet_id": self.planet_id
-        }
-
 class Character(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(250), nullable=False)
@@ -106,4 +82,26 @@ class Planet(db.Model):
             'terrain': self.terrain,
             'surface_water': self.surface_water,
             'planet_pic': self.planet_pic
+        }
+    
+class Favorite(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(250), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    planet_id = db.Column(db.Integer, db.ForeignKey('planet.id'))
+    planet = db.relationship(Planet)
+    character_id = db.Column(db.Integer, db.ForeignKey('character.id'))
+    character = db.relationship(Character)
+    
+
+    def __repr__(self):
+        return '<Favorite %r>' % self.name
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "user_id": self.user_id,
+            "character_id": self.character_id,
+            "planet_id": self.planet_id
         }

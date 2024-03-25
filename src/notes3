@@ -1,3 +1,5 @@
+<!-- Open Web App : pipenv run start -->
+
 # How to open my database
 #     psql -h localhost -U gitpod example
 
@@ -24,3 +26,11 @@
 #     password     | character varying(80)  |           | not null | 
 #     character_id | integer                |           |          | 
 #     planet_id    | integer                |           |          | 
+
+# open planet table 
+#   \dS public.planet\  
+########################################################################################
+
+item = Table_name.query.get(id)
+db.session.delete(item)
+db.session.commit()
